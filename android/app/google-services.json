@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "619618119741",
+    "project_id": "trash-talk-7f704",
+    "storage_bucket": "trash-talk-7f704.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619618119741:android:238d2004161e0ba0363a54",
+        "android_client_info": {
+          "package_name": "com.example.trash_talk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSg6-5Nggf9S8g9gutdMb1gOByS1FaG4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
