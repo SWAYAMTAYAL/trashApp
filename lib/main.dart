@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
+
     return ScreenUtilInit(
       designSize: const Size(414, 896),
       child: MaterialApp(
