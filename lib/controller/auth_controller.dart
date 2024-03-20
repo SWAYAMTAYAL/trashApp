@@ -23,6 +23,7 @@ class AuthController extends GetxController {
           ),
         ),
       );
+
       Get.offAll(Home());
     }
     on FirebaseAuthException catch(e){
