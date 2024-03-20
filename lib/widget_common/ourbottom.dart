@@ -3,7 +3,7 @@ import 'package:trash_talk/consts/consts.dart';
 Widget ourButtom({onpress, color, textColor,String? title}){
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
-      primary: color,
+      backgroundColor: color,
       padding: EdgeInsets.all(12)
     ),
       onPressed: onpress

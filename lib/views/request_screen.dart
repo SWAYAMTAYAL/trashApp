@@ -1,42 +1,49 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:trash_talk/consts/consts.dart';
 import 'package:trash_talk/views/profile_screen.dart';
-import 'package:trash_talk/views/request_screen.dart';
 
+import 'home.dart';
 import 'map_screen.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class Request extends StatefulWidget {
+  const Request({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Request> createState() => _RequestState();
 }
 
-class _HomeState extends State<Home> {
-  var _currentIndex = 0;
+class _RequestState extends State<Request> {
+  var _currentIndex = 1;
   void _navigateToPage(int index) {
     switch (index) {
       case 0:
-      // Already on the Home page
+      // Navigate to Home page
+      // You can replace `HomeScreen` with the actual name of your home screen class
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => Home()),
+        );
         break;
       case 1:
-      // Navigate to Request page
+      // Navigate to Likes page
+      // You can replace `LikesScreen` with the actual name of your likes screen class
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => Request()),
         );
         break;
       case 2:
-      // Navigate to Map page
+      // Navigate to Search page
+      // You can replace `SearchScreen` with the actual name of your search screen class
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => MapScreen()),
         );
         break;
       case 3:
       // Navigate to Profile page
+      // You can replace `ProfileScreen` with the actual name of your profile screen class
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => Profile()),
         );
@@ -70,7 +77,7 @@ class _HomeState extends State<Home> {
         color: Colors.white,
         child:  Center(
           child: Text(
-            'Home Screen',
+            'Request Screen',
             style: TextStyle(
               fontSize: 24.sp,
               fontWeight: FontWeight.bold,
@@ -78,50 +85,50 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      bottomNavigationBar: StylishBottomBar(
+        bottomNavigationBar: StylishBottomBar(
 //  option: AnimatedBarOptions(
 //    iconSize: 32,
 //    barAnimation: BarAnimation.liquid,
 //    iconStyle: IconStyle.animated,
 //    opacity: 0.3,
 //  ),
-        option: BubbleBarOptions(
-          barStyle: BubbleBarStyle.horizotnal,
-          // barStyle: BubbleBarStyle.vertical,
-          bubbleFillStyle: BubbleFillStyle.fill,
-          // bubbleFillStyle: BubbleFillStyle.outlined,
-          opacity: 0.3,
+          option: BubbleBarOptions(
+            barStyle: BubbleBarStyle.horizotnal,
+            // barStyle: BubbleBarStyle.vertical,
+            bubbleFillStyle: BubbleFillStyle.fill,
+            // bubbleFillStyle: BubbleFillStyle.outlined,
+            opacity: 0.3,
+          ),
+          items: [
+            BottomBarItem(
+              icon: const Icon(Icons.home),
+              title: const Text('Home'),
+              backgroundColor: Colors.red,
+            ),
+            BottomBarItem(
+              icon: const Icon(Icons.remove_from_queue),
+              title: const Text('Request'),
+              backgroundColor: Colors.blue,
+            ),
+            BottomBarItem(
+              icon: const Icon(Icons.map),
+              title: const Text('Map'),
+              backgroundColor: Colors.orange,
+            ),
+            BottomBarItem(
+              icon: const Icon(Icons.person),
+              title: const Text('Profile'),
+              backgroundColor: Colors.green,
+            ),
+          ],
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+              _navigateToPage(index);
+            });
+          },
         ),
-        items: [
-          BottomBarItem(
-            icon: const Icon(Icons.home),
-            title: const Text('Home'),
-            backgroundColor: Colors.red,
-          ),
-          BottomBarItem(
-            icon: const Icon(Icons.remove_from_queue),
-            title: const Text('Request'),
-            backgroundColor: Colors.blue,
-          ),
-          BottomBarItem(
-            icon: const Icon(Icons.map),
-            title: const Text('Map'),
-            backgroundColor: Colors.orange,
-          ),
-          BottomBarItem(
-            icon: const Icon(Icons.person),
-            title: const Text('Profile'),
-            backgroundColor: Colors.green,
-          ),
-        ],
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-            _navigateToPage(index);
-          });
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.camera_alt),

@@ -1,3 +1,5 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:trash_talk/consts/consts.dart';
 import 'package:trash_talk/controller/auth_controller.dart';
@@ -7,6 +9,8 @@ import '../../widget_common/custom_textfield.dart';
 import '../../widget_common/logo.dart';
 import '../../widget_common/ourbottom.dart';
 import '../home.dart';
+import 'login.dart';
+
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
@@ -16,6 +20,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool? isCheck = false;
+  final AuthController _controller = Get.put(AuthController()); // Get reference to AuthController
   var contoller =Get.put(AuthController());
   var nameController = TextEditingController();
   var emailController = TextEditingController();
@@ -23,7 +28,10 @@ class _SignUpState extends State<SignUp> {
   var passwordretypeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return bgWidget(
+    ScreenUtil.init(context, designSize: Size(416, 896));
+    return Obx(() => _controller.isLoading.value
+        ? Center(child: Image.asset('assets/images/logo.gif')) // Show loading GIF
+        : bgWidget(
         child:Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -33,7 +41,7 @@ class _SignUpState extends State<SignUp> {
               (context.screenHeight * 0.1).heightBox,
               applogoWidget(),
               10.heightBox,
-              "Sign up $appname".text.fontFamily(bold).white.size(18).make(),
+              "Sign up $appname".text.fontFamily(bold).white.size(18.sp).make(),
               10.heightBox,
               Column(
                 children: [
@@ -50,27 +58,23 @@ class _SignUpState extends State<SignUp> {
                         password: passwordController.text,
                         name: nameController.text
                       );
-                    }).then((value){
-                      Get.offAll(Home());
                     });
                   }).box.width(context.screenWidth-50).make(),
                   5.heightBox,
                   haveAccount.text.color(fontGrey).make(),
                   5.heightBox,
                   ourButtom(color: backgroundcolor,title: login,textColor: whiteColor,onpress: (){
-
+                    Get.to(()=> LoginScreen());
                   }).box.width(context.screenWidth-50).make(),
 
-
-
                 ],
-              ).box.white.rounded.padding(const EdgeInsets.all(16)).width(context.screenWidth-70).shadowSm.make()
+              ).box.white.rounded.padding( EdgeInsets.all(16.sp)).width(context.screenWidth-70).shadowSm.make()
             ],
           ),
 
         ),
       ),
-    ));
+    )));
   }
 }
 
