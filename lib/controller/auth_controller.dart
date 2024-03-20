@@ -14,6 +14,7 @@ class AuthController extends GetxController {
     UserCredential? userCredentiale;
     try {
       isLoading(true);
+
       await auth.signInWithEmailAndPassword(email:email,password:password);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
