@@ -1,11 +1,14 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:trash_talk/consts/consts.dart';
 import 'package:trash_talk/views/profile_screen.dart';
-
 import 'home.dart';
 import 'map_screen.dart';
 
@@ -18,39 +21,44 @@ class Request extends StatefulWidget {
 
 class _RequestState extends State<Request> {
   var _currentIndex = 1;
+  final picker = ImagePicker();
+  File? _image;
+  String _address = '';
+
+  Future<void> _getImageFromCamera() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    } else {
+      // User canceled the image picking operation
+    }
+  }
+
   void _navigateToPage(int index) {
     switch (index) {
       case 0:
-      // Navigate to Home page
-      // You can replace `HomeScreen` with the actual name of your home screen class
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Home()),
-        );
+        Get.off(() => Home());
         break;
       case 1:
-      // Navigate to Likes page
-      // You can replace `LikesScreen` with the actual name of your likes screen class
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Request()),
-        );
+      // Already on the Request page
         break;
       case 2:
-      // Navigate to Search page
-      // You can replace `SearchScreen` with the actual name of your search screen class
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MapScreen()),
-        );
+        Get.off(() => MapScreen());
         break;
       case 3:
-      // Navigate to Profile page
-      // You can replace `ProfileScreen` with the actual name of your profile screen class
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Profile()),
-        );
+        Get.off(() => Profile());
         break;
       default:
         break;
     }
+  }
+
+  void _saveToFirestore() {
+    // Implement your logic to save the entered address to Cloud Firestore
+    // Here you should use the _address variable
+    // After saving, you can show a success message or navigate to another screen
   }
 
   @override
@@ -66,73 +74,110 @@ class _RequestState extends State<Request> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios), // Use the iOS back arrow icon
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            // Handle navigation or any other action
             Navigator.of(context).pop();
           },
         ),
       ),
-      body: Container(
-        color: Colors.white,
-        child:  Center(
-          child: Text(
-            'Request Screen',
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-            ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (_image != null)
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Image.file(_image!),
+                ),
+              if (_image == null)
+                Center(child: Text('No request')),
+              if (_image != null) const SizedBox(height: 16.0),
+              if (_image != null)
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Enter Address',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _address = value;
+                    });
+                  },
+                ),
+              if (_image != null) const SizedBox(height: 16.0),
+              if (_image != null)
+                ElevatedButton(
+                  onPressed: _saveToFirestore,
+                  child: const Text('Submit'),
+                ),
+              if (_image != null && _address.isNotEmpty) const SizedBox(height: 16.0),
+              if (_image != null && _address.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Address: $_address'),
+                      const SizedBox(height: 8.0),
+                      Text('Image:'),
+                      const SizedBox(height: 8.0),
+                      Image.file(_image!),
+                    ],
+                  ),
+                ),
+            ],
           ),
         ),
       ),
-        bottomNavigationBar: StylishBottomBar(
-//  option: AnimatedBarOptions(
-//    iconSize: 32,
-//    barAnimation: BarAnimation.liquid,
-//    iconStyle: IconStyle.animated,
-//    opacity: 0.3,
-//  ),
-          option: BubbleBarOptions(
-            barStyle: BubbleBarStyle.horizotnal,
-            // barStyle: BubbleBarStyle.vertical,
-            bubbleFillStyle: BubbleFillStyle.fill,
-            // bubbleFillStyle: BubbleFillStyle.outlined,
-            opacity: 0.3,
-          ),
-          items: [
-            BottomBarItem(
-              icon: const Icon(Icons.home),
-              title: const Text('Home'),
-              backgroundColor: Colors.red,
-            ),
-            BottomBarItem(
-              icon: const Icon(Icons.remove_from_queue),
-              title: const Text('Request'),
-              backgroundColor: Colors.blue,
-            ),
-            BottomBarItem(
-              icon: const Icon(Icons.map),
-              title: const Text('Map'),
-              backgroundColor: Colors.orange,
-            ),
-            BottomBarItem(
-              icon: const Icon(Icons.person),
-              title: const Text('Profile'),
-              backgroundColor: Colors.green,
-            ),
-          ],
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-              _navigateToPage(index);
-            });
-          },
+      bottomNavigationBar: StylishBottomBar(
+        option: BubbleBarOptions(
+          barStyle: BubbleBarStyle.horizotnal,
+          bubbleFillStyle: BubbleFillStyle.fill,
+          opacity: 0.3,
         ),
+        items: [
+          BottomBarItem(
+            icon: const Icon(Icons.home),
+            title: const Text('Home'),
+            backgroundColor: Colors.red,
+          ),
+          BottomBarItem(
+            icon: const Icon(Icons.remove_from_queue),
+            title: const Text('Request'),
+            backgroundColor: Colors.blue,
+          ),
+          BottomBarItem(
+            icon: const Icon(Icons.map),
+            title: const Text('Map'),
+            backgroundColor: Colors.orange,
+          ),
+          BottomBarItem(
+            icon: const Icon(Icons.person),
+            title: const Text('Profile'),
+            backgroundColor: Colors.green,
+          ),
+        ],
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+            _navigateToPage(index);
+          });
+        },
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: _getImageFromCamera,
         child: const Icon(Icons.camera_alt),
       ),
     );
   }
 }
+

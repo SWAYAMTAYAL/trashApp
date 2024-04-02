@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,17 +17,24 @@ class SpalshScreen extends StatefulWidget {
 }
 
 class _SpalshScreenState extends State<SpalshScreen> {
-  void changeScreen() {
-    Future.delayed(Duration(seconds: 3), () {
-      Get.to(() => const LoginScreen());
-    });
+
+  Future<void> checkUserLogin() async {
+    await Future.delayed(const Duration(seconds: 3)); // Simulating splash screen delay
+
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Get.off(() => Home()); // Navigate to HomeScreen if user is logged in
+    } else {
+      Get.off(() => LoginScreen()); // Navigate to LoginScreen if user is not logged in
+    }
   }
 
   @override
   void initState() {
-    changeScreen();
     super.initState();
+    checkUserLogin();
   }
+
 
   @override
   Widget build(BuildContext context) {

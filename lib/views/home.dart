@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:trash_talk/consts/consts.dart';
@@ -24,22 +26,16 @@ class _HomeState extends State<Home> {
       // Already on the Home page
         break;
       case 1:
+        Get.off(() => Request());
       // Navigate to Request page
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Request()),
-        );
         break;
       case 2:
       // Navigate to Map page
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MapScreen()),
-        );
+        Get.off(() => MapScreen());
         break;
       case 3:
       // Navigate to Profile page
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Profile()),
-        );
+        Get.off(() => Profile());
         break;
       default:
         break;
@@ -61,7 +57,6 @@ class _HomeState extends State<Home> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios), // Use the iOS back arrow icon
           onPressed: () {
-            // Handle navigation or any other action
             Navigator.of(context).pop();
           },
         ),

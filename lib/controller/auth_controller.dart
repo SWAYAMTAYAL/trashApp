@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:trash_talk/consts/consts.dart';
 import 'package:trash_talk/views/auth/signup.dart';
 
-import '../consts/firebase_consts.dart';
+import '../consts/base_consts.dart';
+import '../consts/firebase_auth_const.dart';
 import '../views/home.dart';
 
 class AuthController extends GetxController {
@@ -29,6 +30,7 @@ class AuthController extends GetxController {
     }
     on FirebaseAuthException catch(e){
       VxToast.show(context, msg: e.toString());
+      isLoading (false);
     }finally {
       isLoading(false); // Set loading state to false regardless of success or failure
     }
@@ -56,12 +58,22 @@ class AuthController extends GetxController {
     }
     return userCredentiale;
   }
-  storeUserData({name,password,email,}) async{
-        await firestore.collection(usersCollection).add({
-      'name':name,
-      'password':password,
-      'email':email,
-      'imageUrl':"",
-    });
+  Future<void> storeUserData({
+    required String name,
+    required String password,
+    required String email,
+  }) async {
+    try {
+      await FirebaseFirestore.instance.collection(usersCollection).doc(email).set({
+        'name': name,
+        'password': password,
+        'email': email,
+        'imageUrl': "",
+      });
+      print('User data stored successfully for email: $email');
+    } catch (error) {
+      print('Error storing user data: $error');
+      // Handle error appropriately
+    }
   }
 }

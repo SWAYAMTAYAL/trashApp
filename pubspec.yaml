@@ -35,12 +35,22 @@ dependencies:
   flutter_svg: ^2.0.10+1
   firebase_core: ^2.21.0
   firebase_auth: ^4.12.1
-  firebase_storage: ^11.4.1
+  firebase_storage: ^11.4.10
   cloud_firestore: ^4.13.4
   stylish_bottom_bar: ^1.0.3
   flutter_screenutil: ^5.9.0
-  flutter_map_animations: ^0.5.3
-  convex_bottom_bar: ^3.2.0
+  flutter_typeahead: 4.0.0
+  marquee: 2.2.3
+  url_launcher: 6.1.11
+  provider: 6.0.5
+  location: ^5.0.3
+  logger: 1.4.0
+  image_picker: 1.0.4
+  camera: ^0.10.5+9
+  mapbox_gl:
+    git:
+      url: https://github.com/Sipioteo/maps_3_0_0
+      ref: master
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -20,6 +20,8 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool? isCheck = false;
+  bool _showLogo = false; // Variable to control logo visibility
+
   final AuthController _controller = Get.put(AuthController()); // Get reference to AuthController
   var contoller =Get.put(AuthController());
   var nameController = TextEditingController();
@@ -29,52 +31,64 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: Size(416, 896));
-    return Obx(() => _controller.isLoading.value
-        ? Center(child: Image.asset('assets/images/logo.gif')) // Show loading GIF
-        : bgWidget(
-        child:Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              (context.screenHeight * 0.1).heightBox,
-              applogoWidget(),
-              10.heightBox,
-              "Sign up $appname".text.fontFamily(bold).white.size(18.sp).make(),
-              10.heightBox,
-              Column(
-                children: [
-                  customTextField(hint: namehint,title: name,controller: nameController),
-                  customTextField(hint: emailHint,title: email,controller: emailController),
-                  customTextField(hint: passwordHint,title: password,controller: passwordController),
-                  customTextField(hint: retypepasswordhint,title: retypepassword,controller: passwordretypeController),
+    return Stack(
+      children: [
+    bgWidget(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                (context.screenHeight * 0.1).heightBox,
+                applogoWidget(),
+                10.heightBox,
+                "Sign up $appname".text.fontFamily(bold).white.size(18.sp).make(),
+                10.heightBox,
+                Column(
+                  children: [
+                    customTextField(hint: namehint,title: name,controller: nameController),
+                    customTextField(hint: emailHint,title: email,controller: emailController),
+                    customTextField(hint: passwordHint,title: password,controller: passwordController),
+                    customTextField(hint: retypepasswordhint,title: retypepassword,controller: passwordretypeController),
 
-                  5.heightBox,
-                  ourButtom(color: backgroundcolor,title: signUp,textColor: whiteColor,onpress: () async{
-                    await contoller.SignUpMethod(context: context,email: emailController.text,password: passwordController.text).then((value){
-                      return contoller.storeUserData(
-                        email: emailController.text,
-                        password: passwordController.text,
-                        name: nameController.text
-                      );
-                    });
-                  }).box.width(context.screenWidth-50).make(),
-                  5.heightBox,
-                  haveAccount.text.color(fontGrey).make(),
-                  5.heightBox,
-                  ourButtom(color: backgroundcolor,title: login,textColor: whiteColor,onpress: (){
-                    Get.to(()=> LoginScreen());
-                  }).box.width(context.screenWidth-50).make(),
+                    5.heightBox,
+                    ourButtom(color: backgroundcolor,title: signUp,textColor: whiteColor,
+                        onpress: () async{
+                          setState(() {
+                            _showLogo = true; // Show logo GIF when button is pressed
+                          });
 
-                ],
-              ).box.white.rounded.padding( EdgeInsets.all(16.sp)).width(context.screenWidth-70).shadowSm.make()
-            ],
+                      await contoller.SignUpMethod(context: context,email: emailController.text,password: passwordController.text).then((value){
+                        return contoller.storeUserData(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          name: nameController.text
+                        );
+                      });
+                    }).box.width(context.screenWidth-50).make(),
+                    5.heightBox,
+                    haveAccount.text.color(fontGrey).make(),
+                    5.heightBox,
+                    ourButtom(color: backgroundcolor,title: login,textColor: whiteColor,onpress: (){
+                      Get.to(()=> LoginScreen());
+                    }).box.width(context.screenWidth-50).make(),
+
+                  ],
+                ).box.white.rounded.padding( EdgeInsets.all(16.sp)).width(context.screenWidth-70).shadowSm.make()
+              ],
+            ),
+
           ),
-
         ),
       ),
-    )));
+    ),
+        if (_showLogo) // Show logo GIF when _showLogo is true
+          Center(
+            child: Image.asset('assets/images/applogo.gif'),
+          ),
+      ]
+    );
   }
 }
 
