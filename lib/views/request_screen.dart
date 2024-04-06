@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -55,10 +56,41 @@ class _RequestState extends State<Request> {
     }
   }
 
-  void _saveToFirestore() {
-    // Implement your logic to save the entered address to Cloud Firestore
-    // Here you should use the _address variable
-    // After saving, you can show a success message or navigate to another screen
+  void _saveToFirestore() async {
+    try {
+      if (_image != null && _address.isNotEmpty) {
+        // Upload image to Firestore Storage
+        final storageRef = FirebaseStorage.instance.ref().child('images').child('${DateTime.now()}.jpg');
+        await storageRef.putFile(_image!);
+
+        // Get download URL of the uploaded image
+        final imageUrl = await storageRef.getDownloadURL();
+
+        // Save image URL and address to Firestore
+        DocumentReference docRef = await FirebaseFirestore.instance.collection('requests').add({
+          'image_url': imageUrl,
+          'address': _address,
+          'timestamp': FieldValue.serverTimestamp(), // Optional: include timestamp
+        });
+
+        String documentId = docRef.id; // Retrieve the document ID
+        print('Document ID: $documentId');
+
+        // Show success message or navigate to another screen
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Request submitted successfully'),
+        ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Please add an image and address'),
+        ));
+      }
+    } catch (error) {
+      print('Error saving to Firestore: $error');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Failed to submit request. Please try again later.'),
+      ));
+    }
   }
 
   @override
@@ -94,9 +126,17 @@ class _RequestState extends State<Request> {
                   ),
                   child: Image.file(_image!),
                 ),
+
               if (_image == null)
-                Center(child: Text('No request')),
-              if (_image != null) const SizedBox(height: 16.0),
+                SizedBox(
+                  height: 700.h,
+                  child: Center(
+                    child: Text('No Request',
+                    style: TextStyle(fontSize: 20.sp),
+                    ),
+                  ),
+                ),
+         //     if (_image != null) const SizedBox(height: 16.0),
               if (_image != null)
                 TextField(
                   decoration: InputDecoration(

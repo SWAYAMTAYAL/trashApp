@@ -391,7 +391,7 @@ class _ProfileState extends State<Profile> {
                                                   imagePath: 'assets/images/logout_icon.svg',
                                                   optionTitle: 'Logout',
                                                 ),
-                                                SizedBox(height: 20.h),
+                                                SizedBox(height: 50.h),
                                               ],
                                             )
                                           ],
