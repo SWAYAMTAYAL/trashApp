@@ -225,6 +225,8 @@ class _HomeState extends State<Home> {
     );
   }
 
+
+
   List<PieChartSectionData> showingSections(int yesCount, int noCount, double yesPercentage, double noPercentage) {
     return List.generate(2, (i) {
       final isTouched = i == touchedIndex;
