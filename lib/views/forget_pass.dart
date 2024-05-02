@@ -1,3 +1,6 @@
+
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,17 +12,17 @@ import 'package:trash_talk/widget_common/custom_textfield.dart';
 import 'package:trash_talk/widget_common/logo.dart';
 import 'package:trash_talk/widget_common/ourbottom.dart';
 import '../../controller/auth_controller.dart';
-import '../forget_pass.dart';
-import '../home.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+
+class ForgetScreen extends StatefulWidget {
+  const ForgetScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ForgetScreen> createState() => _ForgetScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgetScreenState extends State<ForgetScreen> {
+  //bool loading=false;
   bool _showLogo = false; // Variable to control logo visibility
   final AuthController _controller = Get.put(AuthController());
 
@@ -45,37 +48,36 @@ class _LoginScreenState extends State<LoginScreen> {
                     (context.screenHeight * 0.1).heightBox,
                     applogoWidget(),
                     10.heightBox,
-                    "Log in to $appname".text.fontFamily(bold).white.size(18).make(),
+                    "Forget Password ?".text.fontFamily(bold).white.size(18).make(),
                     10.heightBox,
                     Column(
                       children: [
                         customTextField(hint: emailHint,title: email,controller: emailController),
-                        customTextField(hint: passwordHint,title: password,controller: passwordController),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(onPressed: (){ Get.to(()=> ForgetScreen());}, child: forgetPassword.text.make())),
+                      //  customTextField(hint: passwordHint,title: password,controller: passwordController),
                         5.heightBox,
-                        ourButtom(color: backgroundcolor,title: login,textColor: whiteColor,
+                        ourButtom(color: backgroundcolor,title: forget,textColor: whiteColor,
                           onpress: () async {
                             setState(() {
                               _showLogo = true; // Show logo GIF when button is pressed
                             });
-                            await contoller.loginMethod(
+                            await contoller.resetPassword(
                               context: context,
                               email: emailController.text,
-                              password: passwordController.text,
                             );
                             setState(() {
-                              _showLogo = false; // Show logo GIF when button is pressed
+                              _showLogo = false;
                             });
                           },
+
                         ).box.width(context.screenWidth - 50).make(),
                         5.heightBox,
+                        /*
                         createNewAccount.text.color(fontGrey).make(),
                         5.heightBox,
                         ourButtom(color: backgroundcolor,title: signUp,textColor: whiteColor,onpress: (){
                           Get.to(()=> SignUp());
                         }).box.width(context.screenWidth-50).make(),
+                        */
                       ],
                     ).box.white.rounded.padding( EdgeInsets.all(16.sp)).width(context.screenWidth-70).shadowSm.make()
                   ],

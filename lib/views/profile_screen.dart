@@ -65,6 +65,7 @@ class _ProfileState extends State<Profile> {
             // Show a blurred profile screen background while waiting
             return Stack(
               children: [
+
                 appScreenCommonBackground(context),
                 CustomScrollView(
                   physics: BouncingScrollPhysics(),
@@ -74,12 +75,12 @@ class _ProfileState extends State<Profile> {
                       delegate: SliverChildListDelegate(
                         [
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 20),
+                            padding: EdgeInsets.symmetric(vertical: 20.sp),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20.sp),
+                                topRight: Radius.circular(20.sp),
                               ),
                             ),
                             child: Padding(
@@ -89,6 +90,7 @@ class _ProfileState extends State<Profile> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+
                                     Text(
                                       "Profile",
                                       // "Hey ",
@@ -105,106 +107,108 @@ class _ProfileState extends State<Profile> {
                                         padding:
                                         EdgeInsets.only(
                                             top: 2.h, right: 5.w, left: 5.w),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start,
-                                          children: <Widget>[
-                                            Row(
-                                              children: <Widget>[
-                                                Stack(
-                                                  alignment: Alignment
-                                                      .bottomRight,
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                          color: Colors.black45,
-                                                          // Border color
-                                                          width: 1, // Border width
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            children: <Widget>[
+                                              Row(
+                                                children: <Widget>[
+                                                  Stack(
+                                                    alignment: Alignment
+                                                        .bottomRight,
+                                                    children: [
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                          border: Border.all(
+                                                            color: Colors.black45,
+                                                            // Border color
+                                                            width: 1, // Border width
+                                                          ),
+                                                        ),
+                                                        child: CircleAvatar(
+                                                            radius: 70.h,
+                                                            backgroundColor: Colors
+                                                                .transparent,
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              'assets/images/artist_icon.svg',
+                                                              height: 150.h,
+                                                            )
+                                                          // backgroundImage: AssetImage('assets/images/artist_icon.png'),
                                                         ),
                                                       ),
-                                                      child: CircleAvatar(
-                                                          radius: 70.h,
-                                                          backgroundColor: Colors
-                                                              .transparent,
-                                                          child: SvgPicture
-                                                              .asset(
-                                                            'assets/images/artist_icon.svg',
-                                                            height: 150.h,
-                                                          )
-                                                        // backgroundImage: AssetImage('assets/images/artist_icon.png'),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          // context.read<ProfileProvider>().uploadProfileImage(context);
+                                                        },
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          color: Colors.black,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        // context.read<ProfileProvider>().uploadProfileImage(context);
-                                                      },
-                                                      child: Icon(
-                                                        Icons.add,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(width: 4.w),
-                                              ],
-                                            ),
-                                            SizedBox(height: 30.h),
-                                            Column(
-                                              children: [
-                                                profileOptions(
-                                                  onTap: () {
-                                                    Get.off(() => Request());
-                                                  },
-                                                  imagePath: 'assets/images/reviews_icon.svg',
-                                                  optionTitle: 'Request',
-                                                ),
-                                                SizedBox(height: 20.h),
-                                                profileOptions(
-                                                  onTap: () {
-                                                    Get.off(() => MapScreen());
-                                                  },
-                                                  imagePath: 'assets/images/black_location_icon.svg',
-                                                  optionTitle: 'Map',
-                                                ),
-                                                SizedBox(height: 40.h),
-                                                profileOptions(
-                                                  onTap: () =>
-                                                      launchUrl(
-                                                        Uri.parse(
-                                                            'https://www.instagram.com/___anujsharma__16/'),
-                                                      ),
-                                                  imagePath: 'assets/images/information_icon.svg',
-                                                  optionTitle: 'more',
-                                                ),
-                                                SizedBox(height: 40.h),
-                                                profileOptions(
-                                                  onTap: () =>
-                                                      launchUrl(
-                                                        Uri.parse(
-                                                            'https://www.instagram.com/___anujsharma__16/'),
-                                                      ),
-                                                  imagePath: 'assets/images/save_icon.svg',
-                                                  optionTitle: 'About Us',
-                                                ),
-                                                SizedBox(height: 40.h),
-                                                profileOptions(
-                                                  onTap: () {
-                                                    FirebaseAuth.instance
-                                                        .signOut();
-                                                    // Navigate to login screen
-                                                    Get.off(() =>
-                                                        LoginScreen());
-                                                  },
-                                                  imagePath: 'assets/images/logout_icon.svg',
-                                                  optionTitle: 'Logout',
-                                                ),
-                                                SizedBox(height: 50.h),
-                                              ],
-                                            )
-                                          ],
-
+                                                    ],
+                                                  ),
+                                                  SizedBox(width: 4.w),
+                                                ],
+                                              ),
+                                              SizedBox(height: 40.h),
+                                              Column(
+                                                children: [
+                                                  profileOptions(
+                                                    onTap: () {
+                                                      Get.off(() => Request());
+                                                    },
+                                                    imagePath: 'assets/images/reviews_icon.svg',
+                                                    optionTitle: 'Request',
+                                                  ),
+                                                  SizedBox(height: 40.h),
+                                                  profileOptions(
+                                                    onTap: () {
+                                                      Get.off(() => MapScreen());
+                                                    },
+                                                    imagePath: 'assets/images/black_location_icon.svg',
+                                                    optionTitle: 'Map',
+                                                  ),
+                                                  SizedBox(height: 40.h),
+                                                  profileOptions(
+                                                    onTap: () =>
+                                                        launchUrl(
+                                                          Uri.parse(
+                                                              'https://www.instagram.com/___anujsharma__16/'),
+                                                        ),
+                                                    imagePath: 'assets/images/information_icon.svg',
+                                                    optionTitle: 'more',
+                                                  ),
+                                                  SizedBox(height: 40.h),
+                                                  profileOptions(
+                                                    onTap: () =>
+                                                        launchUrl(
+                                                          Uri.parse(
+                                                              'https://www.instagram.com/___anujsharma__16/'),
+                                                        ),
+                                                    imagePath: 'assets/images/save_icon.svg',
+                                                    optionTitle: 'About Us',
+                                                  ),
+                                                  SizedBox(height: 40.h),
+                                                  profileOptions(
+                                                    onTap: () {
+                                                      FirebaseAuth.instance
+                                                          .signOut();
+                                                      // Navigate to login screen
+                                                      Get.off(() =>
+                                                          LoginScreen());
+                                                    },
+                                                    imagePath: 'assets/images/logout_icon.svg',
+                                                    optionTitle: 'Logout',
+                                                  ),
+                                                  
+                                                ],
+                                              )
+                                            ],
+                                          
+                                          ),
                                         ),
                                       ),
 
@@ -414,40 +418,31 @@ class _ProfileState extends State<Profile> {
                 ),
               ],
             ),
-            bottomNavigationBar: StylishBottomBar(
-//  option: AnimatedBarOptions(
-//    iconSize: 32,
-//    barAnimation: BarAnimation.liquid,
-//    iconStyle: IconStyle.animated,
-//    opacity: 0.3,
-//  ),
+            bottomNavigationBar: StylishBottomBar(backgroundColor: topbottomcolor,
               option: BubbleBarOptions(
                 barStyle: BubbleBarStyle.horizotnal,
-                // barStyle: BubbleBarStyle.vertical,
                 bubbleFillStyle: BubbleFillStyle.fill,
-                // bubbleFillStyle: BubbleFillStyle.outlined,
                 opacity: 0.3,
               ),
               items: [
                 BottomBarItem(
                   icon: const Icon(Icons.home),
-                  title: const Text('Home'),
-                  backgroundColor: Colors.red,
-
+                  title: const Text('Home',style: TextStyle(fontWeight: FontWeight.bold),),
+                  backgroundColor:  Colors.green,
                 ),
                 BottomBarItem(
                   icon: const Icon(Icons.remove_from_queue),
-                  title: const Text('Request'),
-                  backgroundColor: Colors.blue,
+                  title: const Text('Request',style: TextStyle(fontWeight: FontWeight.bold),),
+                  backgroundColor:  Colors.green,
                 ),
                 BottomBarItem(
                   icon: const Icon(Icons.map),
-                  title: const Text('Map'),
-                  backgroundColor: Colors.orange,
+                  title: const Text('Map',style: TextStyle(fontWeight: FontWeight.bold),),
+                  backgroundColor:  Colors.green,
                 ),
                 BottomBarItem(
                   icon: const Icon(Icons.person),
-                  title: const Text('Profile'),
+                  title: const Text('Profile',style: TextStyle(fontWeight: FontWeight.bold),),
                   backgroundColor: Colors.green,
                 ),
               ],

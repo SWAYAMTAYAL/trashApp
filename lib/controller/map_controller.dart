@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:location/location.dart' as location;
@@ -26,8 +27,8 @@ class MapProvider with ChangeNotifier {
 
   //============= GETTERS =============//
   LatLng get userCurrentLatLng => _userCurrentLatLng;
-  UserModel _userData = UserModel();
-  UserModel get userData => _userData;
+ // UserModel _userData = UserModel();
+ // UserModel get userData => _userData;
   TextEditingController get mapSearchController => _mapSearchController;
 
   /// Initialising [_symbol]
@@ -36,11 +37,11 @@ class MapProvider with ChangeNotifier {
       'marker',
       SymbolOptions(),
     );
-  }
+  }/*
   String? getHomeAddressText() {
     return userData.homeLocation?.addressString;
   }
-
+*/
   Future<void> onMapCreated(
       MapboxMapController mapController,
       BuildContext context,
@@ -57,11 +58,12 @@ class MapProvider with ChangeNotifier {
       _permissionGranted = await _mapLocation.requestPermission();
     }
 
-
     var _locationData = await _mapLocation.getLocation();
 
     _userCurrentLatLng =
         LatLng(_locationData.latitude!, _locationData.longitude!);
+
+    print('User current location: $_userCurrentLatLng'); // Print user's current latitude and longitude
 
     await mapController.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -71,7 +73,16 @@ class MapProvider with ChangeNotifier {
         ),
       ),
     );
+    await mapController.addSymbol(
+      SymbolOptions(
+        geometry: _userCurrentLatLng,
+        iconImage: 'assets/images/current_location_icon.png', // Replace with your icon image
+        iconSize: 100.0.sp,
+      ),
+    );
   }
+
+
   Future<List<Feature>> getPlaceSuggestions() async {
     List<Feature> _data = [];
 

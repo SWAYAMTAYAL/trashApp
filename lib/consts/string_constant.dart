@@ -13,16 +13,16 @@ MapProvider provider, {
 InputDecoration(
 filled: true,
 fillColor: Colors.white,
-contentPadding: EdgeInsets.symmetric(horizontal: 3.5.w),
+contentPadding: EdgeInsets.symmetric(horizontal: 3.w),
 prefixIcon: Padding(
-padding: EdgeInsets.only(left: 3.5.w),
-child: SvgPicture.asset(
-'assets/images/search_icon.svg',
+padding: EdgeInsets.only(left: 3.w),
+child: SvgPicture.asset(height: 20.h,
+'assets/images/current_location_icon.svg',
 fit: BoxFit.scaleDown,
 ),
 ),
 suffixIcon: SizedBox(
-width: 30.w,
+width: 40.w,
 child: Row(
 crossAxisAlignment: CrossAxisAlignment.center,
 children: <Widget>[
@@ -34,7 +34,7 @@ SizedBox(
 height: 3.h,
 width: 20.w,
 child: Marquee(
-text: provider.getHomeAddressText() ??
+text:
 //read<MapProvider>().getHomeAddressText() ??
 'No Address Found!',
 velocity: 40.0,

@@ -73,33 +73,31 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ],
         ),
-        bottomNavigationBar: StylishBottomBar(
+        bottomNavigationBar: StylishBottomBar(backgroundColor: topbottomcolor,
           option: BubbleBarOptions(
             barStyle: BubbleBarStyle.horizotnal,
-            // barStyle: BubbleBarStyle.vertical,
             bubbleFillStyle: BubbleFillStyle.fill,
-            // bubbleFillStyle: BubbleFillStyle.outlined,
             opacity: 0.3,
           ),
           items: [
             BottomBarItem(
               icon: const Icon(Icons.home),
-              title: const Text('Home'),
-              backgroundColor: Colors.red,
+              title: const Text('Home',style: TextStyle(fontWeight: FontWeight.bold),),
+              backgroundColor:  Colors.green,
             ),
             BottomBarItem(
               icon: const Icon(Icons.remove_from_queue),
-              title: const Text('Request'),
-              backgroundColor: Colors.blue,
+              title: const Text('Request',style: TextStyle(fontWeight: FontWeight.bold),),
+              backgroundColor:  Colors.green,
             ),
             BottomBarItem(
               icon: const Icon(Icons.map),
-              title: const Text('Map'),
-              backgroundColor: Colors.orange,
+              title: const Text('Map',style: TextStyle(fontWeight: FontWeight.bold),),
+              backgroundColor:  Colors.green,
             ),
             BottomBarItem(
               icon: const Icon(Icons.person),
-              title: const Text('Profile'),
+              title: const Text('Profile',style: TextStyle(fontWeight: FontWeight.bold),),
               backgroundColor: Colors.green,
             ),
           ],
@@ -116,162 +114,171 @@ class _MapScreenState extends State<MapScreen> {
   }
   }
 
-  Widget mapBox() {
-       return Consumer<MapProvider>(builder: (context, provider, child) {
-        return MapboxMap(
-          accessToken: Keys.mapbox_public_key,
-          initialCameraPosition: const CameraPosition(
-              target: LatLng(28.6304, 77.2177), zoom: 15.0),
-          onMapCreated: (MapboxMapController mapController) async {
-            await provider.onMapCreated(mapController, context);
-           // provider.onMapCreated(mapController, context);
-          },
-          // onMapClick: (Point<double> point, LatLng coordinates) {
-          //   FocusManager.instance.primaryFocus?.unfocus();
-          //   provider.onMapClick(coordinates: coordinates, context: context);
-          // },
+Widget mapBox() {
+  return Consumer<MapProvider>(builder: (context, provider, child) {
+    return MapboxMap(
+      accessToken: Keys.mapbox_public_key,
+      initialCameraPosition: const CameraPosition(
+        target: LatLng(28.6304, 77.2177),
+        zoom: 15.0,
+      ),
+      onMapCreated: (MapboxMapController mapController) async {
+        await provider.onMapCreated(mapController, context);
+        await mapController.addSymbol(
+          SymbolOptions(
+            geometry: provider.userCurrentLatLng,
+            iconImage: 'assets/images/current_location_icon.png', // Replace with your icon image
+            iconSize: 100.0.sp,
+          ),
         );
-       });
-  }
+      },
+    );
+  });
+}
+
 
 Widget _buildSearchBar(MapProvider provider) {
   return SingleChildScrollView(
-    child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 20.sp),
-      child: Positioned(
-        top: 8.h,
-        bottom: 0,
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(3.h),
-            topRight: Radius.circular(3.h),
-          ),
-          child: Container(
-            width: 100.w,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.5.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                         padding: EdgeInsets.symmetric(vertical: 2.h),
-                    child: TypeAheadField(
-                        debounceDuration: Duration(milliseconds: 300),
-                        hideSuggestionsOnKeyboardHide: false,
-                        suggestionsCallback: (pattern) async {
-                          return await provider.getPlaceSuggestions();
-                        },
-                        minCharsForSuggestions: 1,
-                        noItemsFoundBuilder: (context) => Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  onTap: () async {
-                                    provider.clearMapSearchController();
-                                    FocusManager.instance.primaryFocus!
-                                        .unfocus();
-                                    LatLng latLng = await provider
-                                        .fetchCurrentLocation(context);
-                                    await provider.animateToPosition(latLng);
-                                  },
-                                  tileColor: Colors.red,
-                                  title: Row(
-                                    children: <Widget>[
-                                      SvgPicture.asset(
-                                        'assets/images/current_location_icon.svg',
-                                        height: 2.5.h,
-                                      ),
-                                      SizedBox(width: 3.w),
-                                      Text(
-                                        'Your current location',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: Colors.red,
+    child: Stack(
+      children: [
+     Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 40.sp),
+        child: Positioned(
+          top: 8.h,
+          bottom: 0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(3.h),
+              topRight: Radius.circular(3.h),
+            ),
+            child: Container(
+              width: 500.w,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.5.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                           padding: EdgeInsets.symmetric(vertical: 2.h),
+                      child: TypeAheadField(
+                          debounceDuration: Duration(milliseconds: 300),
+                          hideSuggestionsOnKeyboardHide: false,
+                          suggestionsCallback: (pattern) async {
+                            return await provider.getPlaceSuggestions();
+                          },
+                          minCharsForSuggestions: 1,
+                          noItemsFoundBuilder: (context) => Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  ListTile(
+                                    onTap: () async {
+                                      provider.clearMapSearchController();
+                                      FocusManager.instance.primaryFocus!
+                                          .unfocus();
+                                      LatLng latLng = await provider
+                                          .fetchCurrentLocation(context);
+                                      await provider.animateToPosition(latLng);
+                                    },
+                                    tileColor: Colors.red,
+                                    title: Row(
+                                      children: <Widget>[
+                                        SvgPicture.asset(
+                                          'assets/images/current_location_icon.svg',
+                                          height: 2.5.h,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                ListTile(
-                                  tileColor: Colors.white,
-                                  title: Text(
-                                    'Can"t find any location',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: Colors.deepOrange,
+                                       // SizedBox(width: 3.w),
+                                        Text(
+                                          'Your current location',
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                        itemBuilder: (context, Feature suggestion) {
-                          if (suggestion.id == ' Your current location') {
-                            return ListTile(
-                              onTap: () async {
-                                provider.clearMapSearchController();
-                                FocusManager.instance.primaryFocus!.unfocus();
-                                LatLng latLng = await provider
-                                    .fetchCurrentLocation(context);
-                                await provider.animateToPosition(latLng);
-                              },
-                              tileColor: Colors.red,
-                              title: Row(
-                                children: <Widget>[
-                                  SvgPicture.asset(
-                                    'assets/images/current_location_icon.svg',
-                                    height: 2.5.h,
-                                  ),
-                                  SizedBox(width: 3.w),
-                                  Text(
-                                    'Your Current Location',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: Colors.red,
+                                  ListTile(
+                                    tileColor: Colors.white,
+                                    title: Text(
+                                      'Can"t find any location',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: Colors.deepOrange,
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
-                            );
-                          }
-                          return ListTile(
-                            tileColor: Colors.white,
-                            title: Text(
-                              suggestion.placeName ?? "",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: Colors.deepOrange,
+                          itemBuilder: (context, Feature suggestion) {
+                            if (suggestion.id == ' Your current location') {
+                              return ListTile(
+                                onTap: () async {
+                                  provider.clearMapSearchController();
+                                  FocusManager.instance.primaryFocus!.unfocus();
+                                  LatLng latLng = await provider
+                                      .fetchCurrentLocation(context);
+                                  await provider.animateToPosition(latLng);
+                                },
+                                tileColor: Colors.red,
+                                title: Row(
+                                  children: <Widget>[
+                                    SvgPicture.asset(
+                                      'assets/images/current_location_icon.svg',
+                                      height: 2.5.h,
+                                    ),
+                                    SizedBox(width: 3.w),
+                                    Text(
+                                      'Your Current Location',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                            return ListTile(
+                              tileColor: Colors.white,
+                              title: Text(
+                                suggestion.placeName ?? "",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: Colors.deepOrange,
+                                ),
                               ),
+                            );
+                          },
+                          onSuggestionSelected: (Feature suggestion) async {
+                            provider.handlePlaceSelectionEvent(suggestion);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
+                          textFieldConfiguration: TextFieldConfiguration(
+                            textInputAction: TextInputAction.done,
+                            cursorColor: Colors.deepOrange,
+                            controller: provider.mapSearchController,
+                            decoration: searchBoxInputDecoration(
+                                hintText: '  Search Location', provider
                             ),
-                          );
-                        },
-                        onSuggestionSelected: (Feature suggestion) async {
-                          provider.handlePlaceSelectionEvent(suggestion);
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        },
-                        textFieldConfiguration: TextFieldConfiguration(
-                          textInputAction: TextInputAction.done,
-                          cursorColor: Colors.deepOrange,
-                          controller: provider.mapSearchController,
-                          decoration: searchBoxInputDecoration(
-                              hintText: 'Search Location', provider
                           ),
                         ),
                       ),
-                    ),
-                 ],
-                    ),
-                ),
-                ),
-              ],
+                   ],
+                      ),
+                  ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
+   ],
     ),
   );
 }
@@ -292,7 +299,7 @@ Widget recenterWidget(
       },
       child: Container(
         height: 5.h,
-        width: 5.h,
+        width: 3.h,
         padding: EdgeInsets.all(1.h),
         decoration: BoxDecoration(
           color: Colors.white,

@@ -47,6 +47,7 @@ dependencies:
   logger: 1.4.0
   image_picker: 1.0.4
   camera: ^0.10.5+9
+  fl_chart: ^0.67.0
   mapbox_gl:
     git:
       url: https://github.com/Sipioteo/maps_3_0_0

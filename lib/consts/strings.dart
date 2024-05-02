@@ -11,6 +11,7 @@ const name = "Name";
 const namehint= "Name";
 const forgetPassword = "Forget Password";
 const login = "Log in";
+const forget  = " Reset Password";
 const signUp = " Sign Up";
 const createNewAccount = "or Create New Account";
 const LoginWith= "Login With";

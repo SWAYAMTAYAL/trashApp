@@ -9,6 +9,7 @@ const Color lightGrey = Color.fromRGBO(239, 239, 239, 1);
 const Color redColor = Color.fromRGBO(230, 46, 4, 1);
 const Color golden = Color.fromRGBO(255, 168, 0, 1);
 const Color backgroundcolor = Color(0xff0F222D);
+const Color topbottomcolor = Color(0xff0F223A);
 const Color creme = Color(0xff000000);
  const Color graphicFillDark = Color(0xFFF2F2F2);
 const Color textDark = Color(0xFF373737);
