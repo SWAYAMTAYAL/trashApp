@@ -386,6 +386,7 @@ class _HomeState extends State<Home> {
           opacity: 0.3,
         ),
         items: [
+
           BottomBarItem(
             icon: const Icon(Icons.home),
             title: const Text('Home',style: TextStyle(fontWeight: FontWeight.bold),),
